@@ -1,68 +1,69 @@
-import { Link } from "react-router-dom";
-import logo from "/Logo.png"; // serve da pasta public
+import { Link, useNavigate } from "react-router-dom";
+import logo from "/Logo.png";
 import search from "../../assets/search.png";
 import cart from "../../assets/Cart.png";
 import user from "../../assets/User.png";
-import { FaSignInAlt } from "react-icons/fa"; // novo ícone de login
+import { FaSignInAlt } from "react-icons/fa";
 import { useState } from "react";
 
 export default function Topo() {
   const [showSearch, setShowSearch] = useState(false);
+  const [term, setTerm] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleKey = (e) => {
+    if (e.key === "Enter" && term.trim() !== "") {
+      navigate(`/buscar?game=${term}`);
+      setShowSearch(false);
+    }
+  };
 
   return (
     <header className="topo">
-      {/* 🔹 Logo */}
       <Link to="/" className="logo-area">
-        <img src={logo} alt="Trapdoor Logo" className="logo" />
+        <img src={logo} className="logo" />
         <h1 className="logo-text">Trapdoor</h1>
       </Link>
 
-      {/* 🔹 Navegação */}
       <nav className="menu">
-        <Link to="/" className="menu-link">
-          Início
-        </Link>
-        <Link to="/carrinho" className="menu-link">
-          Carrinho
-        </Link>
-        <Link to="/usuario" className="menu-link">
-          Usuário
-        </Link>
-        <Link to="/signin" className="menu-link">
-          Login
-        </Link>
+        <Link to="/" className="menu-link">Início</Link>
+        <Link to="/carrinho" className="menu-link">Carrinho</Link>
+        <Link to="/usuario" className="menu-link">Usuário</Link>
+        <Link to="/signin" className="menu-link">Login</Link>
       </nav>
 
-      {/* 🔹 Ícones */}
       <div className="icons">
-        {/* Busca */}
+        {/* Botão para abrir o input */}
         <img
           src={search}
           alt="Buscar"
           className="icon"
           onClick={() => setShowSearch(!showSearch)}
         />
+
         {showSearch && (
           <input
             type="text"
-            placeholder="Buscar jogos..."
             className="search-input"
+            placeholder="Buscar jogos..."
+            autoFocus
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+            onKeyDown={handleKey}
           />
         )}
 
-        {/* Carrinho */}
         <Link to="/carrinho">
-          <img src={cart} alt="Carrinho" className="icon" />
+          <img src={cart} className="icon" />
         </Link>
 
-        {/* Usuário */}
         <Link to="/usuario">
-          <img src={user} alt="Usuário" className="icon" />
+          <img src={user} className="icon" />
         </Link>
 
-        {/* Login com ícone diferente */}
         <Link to="/signin">
-          <FaSignInAlt className="icon text-white text-xl opacity-90 hover:opacity-100 transition" />
+          <FaSignInAlt className="icon text-white text-xl" />
         </Link>
       </div>
     </header>

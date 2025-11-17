@@ -8,6 +8,7 @@ import Payment from "./pages/Payment";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Signin from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import SearchResults from "./pages/SearchResults";
 
 import AuthGuard from "./authGuard";
 
@@ -27,7 +28,7 @@ export default function Routers() {
           </AuthGuard>
         }
       />
-
+      <Route path="/buscar" element={<SearchResults />} />
       <Route path="/carrinho" element={<Cart />} />
       <Route path="/jogo/:id" element={<GamePage />} />
       <Route path="/pagamento" element={<Payment />} />

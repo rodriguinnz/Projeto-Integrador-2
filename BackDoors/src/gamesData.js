@@ -61,7 +61,7 @@ export const gamesData = [
     price: "179,40",
     discount: "40",
     cover: "/src/assets/Starfield.png",
-    video: "https://www.youtube.com/embed/k2p3c8Eo9pA", // exemplo: trailer oficial de Starfield
+    video: "https://www.youtube.com/embed/kfYEiTdsyas", // exemplo: trailer oficial de Starfield
     requisitos: {
       minimos: [
         "SO: Windows 10",

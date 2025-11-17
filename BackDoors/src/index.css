@@ -58,9 +58,23 @@
   @apply w-full max-w-7xl mx-auto;
 }
  /*banners*/
- .banner { @apply flex justify-center my-20 px-4; }
- .banner-img { @apply w-full h-auto object-cover hover:scale-105 transition-transform duration-500; }
- .banner-img-container { @apply relative w-full max-w-6xl rounded-2xl overflow-hidden;}
+/* ========== BANNERS AJUSTADOS ========== */
+
+/* CONTÊINER EXTERNO — centraliza e dá espaçamento vertical */
+.banner {
+  @apply flex justify-center my-20 px-4;
+}
+
+/* FAZ O BANNER FICAR DO TAMANHO DO PAGE-CONTAINER */
+.banner-img-container {
+  @apply w-full max-w-7xl overflow-hidden ;
+}
+
+/* MANTÉM O EFEITO ZOOM */
+.banner-img {
+  @apply w-full h-auto object-cover transition-transform duration-500 hover:scale-105;
+}
+
  /*titulos*/
 .title-large {
   @apply text-4xl font-bold mb-4 text-white;
@@ -783,4 +797,10 @@ a {
   .action-buttons {
     @apply flex items-center gap-2;
   }
+}
+.banner-full {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  padding: 0;
 }

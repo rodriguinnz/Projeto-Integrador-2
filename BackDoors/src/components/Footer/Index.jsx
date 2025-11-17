@@ -64,7 +64,7 @@ export default function Footer() {
 
       {/* Linha final */}
       <div className="footer-bottom">
-        Desenvolvido por <span className="author">LUIZ GUSTAVO</span>
+        Desenvolvido por <span className="author">LUIZ GUSTAVO e RODRIGO</span>
       </div>
     </footer>
   );

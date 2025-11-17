@@ -1,11 +1,10 @@
+import { useAuth } from "./hooks/useAuth";
 import { Navigate } from "react-router-dom";
 
 export default function AuthGuard({ children }) {
-  const logged = localStorage.getItem("trapdoor_token");
+  const { user } = useAuth();
 
-  if (!logged) {
-    return <Navigate to="/signin" replace />;
-  }
+  if (!user) return <Navigate to="/signin" replace />;
 
   return children;
 }

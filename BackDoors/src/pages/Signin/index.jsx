@@ -1,108 +1,142 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import "./Signin.css";
+import "./SignIn.css";
 import trapdoorBanner from "/src/assets/trapdoorbanner.png";
+
 import { FaFacebookF, FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
-export default function Signin() {
+import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+export default function SignUp() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [senha, setSenha] = useState("");
+  const [confirmar, setConfirmar] = useState("");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  async function handleRegister(e) {
     e.preventDefault();
     setError("");
 
-    if (username.length < 3) {
-      return setError("Nome de usuário muito curto.");
-    }
+    if (!/\S+@\S+\.\S+/.test(email))
+      return setError("E-mail inválido.");
 
-    if (senha.length < 4) {
-      return setError("Senha muito curta.");
-    }
+    if (user.length < 3)
+      return setError("Nome de usuário muito curto.");
+
+    if (senha.length < 6)
+      return setError("A senha precisa ter pelo menos 6 caracteres.");
+
+    if (senha !== confirmar)
+      return setError("As senhas não coincidem.");
 
     setLoading(true);
 
-    setTimeout(() => {
-      localStorage.setItem("trapdoor_token", "logado123");
-
+    try {
+      await createUserWithEmailAndPassword(auth, email, senha);
       navigate("/usuario");
-    }, 800);
-  };
+    } catch (err) {
+      setError("Erro ao criar conta. Verifique o e-mail.");
+    }
+
+    setLoading(false);
+  }
+
+  async function registerGoogle() {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      navigate("/usuario");
+    } catch (err) {
+      setError("Erro ao criar conta com Google.");
+    }
+  }
 
   return (
-    <div className="signin-wrapper">
+    <div className="signup-wrapper">
+      <div className="signup-left">
+        <div className="signup-box">
 
-      <div className="signin-left">
-        <div className="signin-box">
+          <img src="/Logo.png" className="signup-logo" />
 
-          <img src="/Logo.png" className="signin-logo" alt="Trapdoor Logo" />
+          <h2 className="signup-title">Criar conta</h2>
 
-          <h2 className="signin-title">Fazer login</h2>
+          <form onSubmit={handleRegister}>
 
-          <form onSubmit={handleLogin} className="signin-form">
+            <input
+              type="email"
+              placeholder="E-mail"
+              className="input-box"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
 
             <input
               type="text"
               placeholder="Nome de usuário"
-              className={`input-box ${error && username.length < 3 ? "input-error" : ""}`}
-              onChange={(e) => setUsername(e.target.value)}
+              className="input-box"
+              onChange={(e) => setUser(e.target.value)}
+              required
             />
 
             <input
               type="password"
               placeholder="Senha"
-              className={`input-box ${error && senha.length < 4 ? "input-error" : ""}`}
+              className="input-box"
               onChange={(e) => setSenha(e.target.value)}
+              required
+            />
+
+            <input
+              type="password"
+              placeholder="Confirmar senha"
+              className="input-box"
+              onChange={(e) => setConfirmar(e.target.value)}
+              required
             />
 
             {error && <p className="error-message">{error}</p>}
 
             <button type="button" className="social facebook">
-              <FaFacebookF />
-              <span>Facebook</span>
+              <FaFacebookF /> <span>Facebook</span>
             </button>
 
-            <button type="button" className="social google">
-              <FcGoogle className="google-icon" />
+            <button type="button" className="social google" onClick={registerGoogle}>
+              <FcGoogle className="google-icon" /> 
               <span>Google</span>
             </button>
 
             <button type="button" className="social apple">
-              <FaApple />
-              <span>Apple</span>
+              <FaApple /> <span>Apple</span>
             </button>
 
             <div className="remember-area">
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember">Manter login</label>
+              <input type="checkbox" id="save" />
+              <label htmlFor="save">Salvar dados</label>
             </div>
 
-            <button type="submit" className="btn-continue" disabled={loading}>
-              {loading ? "Carregando..." : "AVANÇAR →"}
+            <button type="submit" className="btn-register" disabled={loading}>
+              {loading ? "Carregando..." : "CADASTRAR →"}
             </button>
 
           </form>
 
-          <div className="signin-links">
-            <p className="help-link">NÃO CONSEGUE FAZER LOGIN?</p>
-
-            <Link to="/signup" className="create-account-link">
-              CRIAR CONTA
-            </Link>
+          <div className="signup-links">
+            <p>NÃO CONSEGUE CRIAR CONTA?</p>
+            <Link to="/signin">JÁ TEM UMA CONTA?</Link>
           </div>
-
         </div>
       </div>
 
-      <div className="signin-right">
-        <img src={trapdoorBanner} className="signin-banner" />
+      <div className="signup-right">
+        <img src={trapdoorBanner} className="signup-banner" />
       </div>
-
     </div>
   );
 }

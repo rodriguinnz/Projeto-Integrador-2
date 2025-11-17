@@ -16,7 +16,7 @@ export default function Routers() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-
+      <Route path="/usuario" element={<User />} />
       <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<SignUp />} />
 
